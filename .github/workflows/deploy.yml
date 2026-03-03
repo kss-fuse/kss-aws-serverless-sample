@@ -1,4 +1,5 @@
 on:
+  # 手動トリガーを有効化
   workflow_dispatch:
     inputs:
       branch:
@@ -54,7 +55,27 @@ jobs:
         run: aws sts get-caller-identity
 
       #5. パラメータ設定
-      # 後ほど対応する
+      - name: Set deployment variables
+        id: vars
+        shell: pwsh
+        run: |
+          $envName = "${{ inputs.environment }}"
+          if ($envName -eq "development") {
+            $configEnv = "dev"
+            $stageName = "dev"
+            $yourName  = "Development"
+          } elseif ($envName -eq "staging") {
+            $configEnv = "stg"
+            $stageName = "stg"
+            $yourName  = "Stage"
+          } else {
+            $configEnv = "prd"
+            $stageName = "prd"
+            $yourName  = "Production"
+          }
+          "CONFIG_ENV=$configEnv" | Out-File -FilePath $env:GITHUB_ENV -Append
+          "STAGE_NAME=$stageName" | Out-File -FilePath $env:GITHUB_ENV -Append
+          "YOUR_NAME=$yourName" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       #6. ビルド
       - name: Run SAM build
@@ -62,5 +83,8 @@ jobs:
         run: ./build.ps1
 
       #7. AWS上へアップロード
-      - name: Deploy
-        run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
+      - name: Deploy SAM template
+        shell: pwsh
+        run: |
+          sam deploy --stack-name "${{ secrets.AWS_LAMBDA_STACK_NAME }}" --s3-bucket "${{ secrets.AWS_S3_LAMBDA_BUCKET_NAME }}" --region ap-northeast-1 --no-confirm-changeset --no-fail-on-empty-changeset --capabilities CAPABILITY_IAM --config-env $env:CONFIG_ENV --parameter-overrides StageName=$env:STAGE_NAME YourName=$env:YOUR_NAME BucketName="${{ secrets.AWS_S3_DATA_BUCKET_NAME }}"
+          
