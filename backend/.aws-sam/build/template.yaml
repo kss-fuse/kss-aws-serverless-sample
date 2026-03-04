@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Kss Poc System
+Parameters:
+  BucketName:
+    Type: String
+Globals:
+  Api:
+    TracingEnabled: true
+    Cors:
+      AllowMethods: '''GET,POST,PUT,DELETE,OPTIONS'''
+      AllowHeaders: '''*'''
+      AllowOrigin: '''*'''
+  Function:
+    Architectures:
+    - x86_64
+    Environment:
+      Variables:
+        BUCKET_NAME:
+          Ref: BucketName
+        TZ: Asia/Tokyo
+    LoggingConfig:
+      LogFormat: JSON
+    Runtime: python3.13
+    Timeout: 30
+    Tracing: Active
+Resources:
+  CommonLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: kss-common-layer
+      ContentUri: ..\..\src\layers\common
+      CompatibleRuntimes:
+      - python3.13
+  KssPocSystemApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: dev
+  InitFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: InitFunction
+      Handler: app.lambda_handler
+      Layers:
+      - Ref: CommonLayer
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: KssPocSystemApi
+            Path: /init
+            Method: get
+    Metadata:
+      SamResourceId: InitFunction
