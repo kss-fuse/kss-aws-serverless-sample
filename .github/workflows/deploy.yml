@@ -56,43 +56,16 @@ jobs:
       - name: Check AWS CLI configuration (verify Identity)
         run: aws sts get-caller-identity
 
-      # #5. パラメータ設定
-      # - name: Set deployment variables
-      #   id: vars
-      #   shell: pwsh
-      #   run: |
-      #     $envName = "${{ inputs.environment }}"
-      #     if ($envName -eq "dev") {
-      #       $configEnv = "dev"
-      #     } elseif ($envName -eq "stg") {
-      #       $configEnv = "stg"
-      #     } else {
-      #       $configEnv = "prd"
-      #     }
-      #     "CONFIG_ENV=$configEnv" | Out-File -FilePath $env:GITHUB_ENV -Append
-
-      #5. 環境判定
+      #5. 環境情報設定
       - name: Set Environment
         run: |
-          echo "Branch = $GITHUB_REF_NAME"
+          ENV=${{ github.event.inputs.environment }}
+          echo "CONFIG_ENV=$ENV" >> $GITHUB_ENV
+          echo "TEMPLATE_FILE=template_${ENV}.yaml" >> $GITHUB_ENV
 
-          if [[ "$GITHUB_REF_NAME" == "dev" ]]; then
-            echo "CONFIG_ENV=dev" >> $GITHUB_ENV
-            echo "TEMPLATE_FILE=backend/template_dev.yaml" >> $GITHUB_ENV
-
-          elif [[ "$GITHUB_REF_NAME" == "stg" ]]; then
-            echo "CONFIG_ENV=stg" >> $GITHUB_ENV
-            echo "TEMPLATE_FILE=backend/template_stg.yaml" >> $GITHUB_ENV
-
-          else
-            echo "CONFIG_ENV=prd" >> $GITHUB_ENV
-            echo "TEMPLATE_FILE=backend/template_prd.yaml" >> $GITHUB_ENV
-          fi
-          
       #6. ビルド
       - name: SAM build
         run: sam build -t $TEMPLATE_FILE
-        working-directory: backend
 
       #7. AWS上へアップロード
       - name: SAM Deploy
