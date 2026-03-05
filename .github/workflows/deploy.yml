@@ -63,14 +63,17 @@ jobs:
         run: |
           $envName = "${{ inputs.environment }}"
           if ($envName -eq "development") {
+            $templateFile = "template_dev.yaml"
             $configEnv = "dev"
             $stageName = "dev"
             $yourName  = "Development"
           } elseif ($envName -eq "staging") {
+            $templateFile = "template_stg.yaml"
             $configEnv = "stg"
             $stageName = "stg"
             $yourName  = "Stage"
           } else {
+            $templateFile = "template_prd.yaml"
             $configEnv = "prd"
             $stageName = "prd"
             $yourName  = "Production"
@@ -81,12 +84,12 @@ jobs:
 
       #6. ビルド
       - name: SAM build
-        run: sam build
+        run: sam build -t $templateFile
 
       #7. AWS上へアップロード
       - name: SAM Deploy
         run: |
-          sam deploy \
+          sam deploy -t $templateFile \
             --stack-name ${{ secrets.AWS_LAMBDA_STACK_NAME }} \
             --s3-bucket ${{ secrets.AWS_S3_LAMBDA_BUCKET_NAME }} \
             --region ap-northeast-1 \
