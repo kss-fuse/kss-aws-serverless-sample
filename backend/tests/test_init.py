@@ -1,5 +1,4 @@
-from src.functions.init.app import lambda_handler
-
+from backend.src.functions.init.app import lambda_handler
 
 def test_lambda_handler():
     event = {}
