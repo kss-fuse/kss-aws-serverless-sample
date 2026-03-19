@@ -1,0 +1,76 @@
+name: Frontend Deploy
+
+on:
+  # 手動トリガーを有効化
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Input the branch to deploy"
+        required: true
+        default: "main"
+        type: string
+      environment:
+        description: "Select the environment to deploy"
+        required: true
+        type: choice
+        options:
+          - dev
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy Frontend
+    runs-on: ubuntu-latest
+
+    environment: ${{ inputs.environment }}
+
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      # 1. リポジトリのチェックアウト
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }} # 選択したブランチをチェックアウト
+
+      # 2. Node setup 環境のセットアップ
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.12.0 # Node.jsのバージョンを指定
+          cache: npm
+          cache-dependency-path: ./frontend/package-lock.json
+
+      # 3. 依存関係のインストール
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. .env 作成
+      - name: Generate .env file
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
+
+      # 5. 構文チェック
+      - name: Run Lint Checks
+        run: npm run lint
+
+      # 6. アプリケーションのビルド
+      - name: Build app
+        run: npm run build -- --mode ${{ inputs.environment }}
+
+      # 7. AWS 認証
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ROLE_NAME }}
+          aws-region: ap-northeast-1
+
+      # 8. S3 デプロイ
+      - name: Deploy to S3
+        run: |
+          aws s3 sync ./dist s3://${{ secrets.S3_BUCKET_NAME }} --delete
