@@ -57,5 +57,5 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref KssServerlessSampleApi
-            Path: /init
+            Path: /api/init
             Method: get

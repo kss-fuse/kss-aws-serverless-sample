@@ -56,7 +56,7 @@ Resources:
           Properties:
             RestApiId:
               Ref: KssServerlessSampleApi
-            Path: /init
+            Path: /api/init
             Method: get
     Metadata:
       SamResourceId: KssServerlessSampleInitFunction

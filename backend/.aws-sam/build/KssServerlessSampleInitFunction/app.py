@@ -1,13 +1,15 @@
 import json
 
 def lambda_handler(event, context):
+
+    body = {
+        "message": "Hello from Lambda"
+    }
+
     return {
         "statusCode": 200,
         "headers": {
             "Content-Type": "application/json"
         },
-        "body": json.dumps({
-            "message": "Kss Serverless Sample is running!",
-            "input": event
-        })
+        "body": json.dumps(body)
     }
