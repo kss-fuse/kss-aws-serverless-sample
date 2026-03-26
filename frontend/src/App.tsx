@@ -3,7 +3,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Home from "./pages/Home";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
-axios.defaults.headers.post["access-control-allow-origin"] = "*";
 
 function App() {
  
