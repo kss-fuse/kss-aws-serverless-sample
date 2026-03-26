@@ -61,7 +61,7 @@ jobs:
 
       # 6. アプリケーションのビルド
       - name: Build app
-        run: npm run build -- --mode ${{ inputs.environment }}
+        run: npm run build:${{ inputs.environment }}
 
       # 7. AWS 認証
       - name: Configure AWS credentials
