@@ -10,10 +10,15 @@ function Home() {
     const fetchData = async () => {
         try{
             // JWT取得
-            const token = await getAccessTokenSilently();
+            const token = await getAccessTokenSilently({
+                authorizationParams: {
+                    audience: "https://kss-api"
+                }
+            });
             console.log("JWT:", token);
+
             // API呼び出し
-            const response = await fetch(`${API_URL}init`, {
+            const response = await fetch(`${API_URL}/init`, {
                 headers: {
                 Authorization: `Bearer ${token}`
                 }

@@ -2,7 +2,8 @@ import json
 
 def lambda_handler(event, context):
 
-    auth_header = event.get("headers", {}).get("authorization")
+    headers = event.get("headers", {})
+    auth = headers.get("Authorization") or headers.get("authorization")
 
     return {
         "statusCode": 200,
@@ -11,6 +12,6 @@ def lambda_handler(event, context):
         },
         "body": json.dumps({
             "message": "JWT received",
-            "authorization": auth_header
+            "authorization": auth
         })
     }
