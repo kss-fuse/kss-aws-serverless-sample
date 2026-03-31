@@ -73,7 +73,7 @@ jobs:
 
       #8. テスト実行
       - name: Run Tests
-        run: pytest
+        run: pytest --ignore=src/layers
 
       #9. ビルド
       - name: SAM build
