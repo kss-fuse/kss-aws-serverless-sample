@@ -4,6 +4,10 @@ Description: Kss Serverless Sample Dev
 Parameters:
   BucketName:
     Type: String
+  Auth0Domain:
+    Type: String
+  Auth0ClientID:
+    Type: String
 Globals:
   Api:
     TracingEnabled: true
@@ -18,6 +22,10 @@ Globals:
       Variables:
         BUCKET_NAME:
           Ref: BucketName
+        AUTH0_DOMAIN:
+          Ref: Auth0Domain
+        AUTH0_CLIENT_ID:
+          Ref: Auth0ClientID
         TZ: Asia/Tokyo
     LoggingConfig:
       LogFormat: JSON

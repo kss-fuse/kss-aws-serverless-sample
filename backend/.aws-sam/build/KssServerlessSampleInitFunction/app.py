@@ -1,10 +1,11 @@
+import os
 import json
 import requests
 from jose import jwt
 from jose.exceptions import JWTError
 
 # ===== 設定 =====
-AUTH0_DOMAIN = "dev-tvqwllfydvykkfgd.us.auth0.com"
+AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN")
 API_AUDIENCE = "https://kss-api"
 ALGORITHMS = ["RS256"]
 
