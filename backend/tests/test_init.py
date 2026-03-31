@@ -1,7 +1,7 @@
 from src.functions.init.app import lambda_handler
 from unittest.mock import patch
 
-@patch("src.functions.init.app.jwks", {
+@patch("src.functions.init.app.get_jwks", {
     "keys": [
         {
             "kid": "test-kid",
