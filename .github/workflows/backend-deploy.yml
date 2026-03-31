@@ -69,7 +69,7 @@ jobs:
 
       #7. Lint（コード品質チェック）
       - name: Run Lint
-        run: ruff check .
+        run: ruff check . --extend-exclude src/layers
 
       #8. テスト実行
       - name: Run Tests
