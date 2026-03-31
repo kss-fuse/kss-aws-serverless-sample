@@ -93,7 +93,6 @@ jobs:
             --capabilities CAPABILITY_IAM \
             --config-env $CONFIG_ENV \
             --parameter-overrides \
-              BucketName="${{ secrets.AWS_S3_DATA_BUCKET_NAME }}" \ 
-              Auth0Domain="${{ secrets.VITE_AUTH0_DOMAIN }}" \
-              Auth0ClientID="${{ secrets.VITE_AUTH0_CLIENT_ID }}"
- 
+              BucketName=${{ secrets.AWS_S3_DATA_BUCKET_NAME }} \
+              Auth0Domain=${{ secrets.VITE_AUTH0_DOMAIN }} \
+              Auth0ClientID=${{ secrets.VITE_AUTH0_CLIENT_ID }}
