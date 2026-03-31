@@ -9,7 +9,7 @@ API_AUDIENCE = "https://kss-api"
 ALGORITHMS = ["RS256"]
 
 # ===== JWKS取得 =====
-jwks_url = f"https://dev-tvqwllfydvykkfgd.us.auth0.com/.well-known/jwks.json"
+jwks_url = f"https://{AUTH0_DOMAIN}/.well-known/jwks.json"
 jwks = requests.get(jwks_url).json()
 
 
@@ -47,7 +47,7 @@ def lambda_handler(event, context):
             rsa_key,
             algorithms=ALGORITHMS,
             audience=API_AUDIENCE,
-            issuer=f"https://dev-tvqwllfydvykkfgd.us.auth0.com/"
+            issuer=f"https://{AUTH0_DOMAIN}/"
         )
 
         # ===== 成功レスポンス =====
