@@ -9,10 +9,20 @@ AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN")
 API_AUDIENCE = "https://kss-api"
 ALGORITHMS = ["RS256"]
 
-# ===== JWKS取得 =====
-jwks_url = f"https://{AUTH0_DOMAIN}/.well-known/jwks.json"
-jwks = requests.get(jwks_url).json()
+# ===== JWKSキャッシュ =====
+_jwks = None
 
+def get_jwks():
+    global _jwks
+
+    if _jwks is None:
+        if not AUTH0_DOMAIN:
+            raise ValueError("AUTH0_DOMAIN is not set")
+
+        jwks_url = f"https://{AUTH0_DOMAIN}/.well-known/jwks.json"
+        _jwks = requests.get(jwks_url).json()
+
+    return _jwks
 
 def lambda_handler(event, context):
     try:
@@ -29,6 +39,7 @@ def lambda_handler(event, context):
         unverified_header = jwt.get_unverified_header(token)
 
         rsa_key = {}
+        jwks = get_jwks()
         for key in jwks["keys"]:
             if key["kid"] == unverified_header["kid"]:
                 rsa_key = {

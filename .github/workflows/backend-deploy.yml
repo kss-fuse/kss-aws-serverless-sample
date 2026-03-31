@@ -62,6 +62,7 @@ jobs:
           ENV=${{ github.event.inputs.environment }}
           echo "CONFIG_ENV=$ENV" >> $GITHUB_ENV
           echo "TEMPLATE_FILE=template_${ENV}.yaml" >> $GITHUB_ENV
+          echo "AUTH0_DOMAIN=${{ secrets.VITE_AUTH0_DOMAIN }}" >> $GITHUB_ENV
 
       #6. CI環境準備
       - name: Install dev dependencies
@@ -74,7 +75,7 @@ jobs:
       #8. テスト実行
       - name: Run Tests
         run: pytest --ignore=src/layers
-
+      
       #9. ビルド
       - name: SAM build
         run: sam build --use-container -t $TEMPLATE_FILE
