@@ -77,7 +77,7 @@ jobs:
 
       #9. ビルド
       - name: SAM build
-        run: sam build -t $TEMPLATE_FILE
+        run: sam build --use-container -t $TEMPLATE_FILE
 
       #10. AWS上へアップロード
       - name: SAM Deploy
