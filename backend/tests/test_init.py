@@ -7,7 +7,7 @@ def test_lambda_handler(mock_decode):
 
     event = {
         "headers": {
-            "authorization": "Bearer dummy-token"
+            "Authorization": "Bearer dummy-token"
         }
     }
     context = {}
