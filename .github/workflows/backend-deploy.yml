@@ -68,6 +68,11 @@ jobs:
       - name: Install dev dependencies
         run: pip install -r requirements-ci.txt
 
+      - name: Install layer dependencies
+        run: |
+          pip install -r backend/src/layers/common/requirements.txt \
+            -t backend/src/layers/common/python        
+
       #7. Lint（コード品質チェック）
       - name: Run Lint
         run: ruff check . --extend-exclude src/layers
