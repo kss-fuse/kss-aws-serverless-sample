@@ -70,8 +70,8 @@ jobs:
 
       - name: Install layer dependencies
         run: |
-          pip install -r backend/src/layers/common/requirements.txt \
-            -t backend/src/layers/common/python        
+          pip install -r src/layers/common/requirements.txt \
+            -t src/layers/common/python        
 
       #7. Lint（コード品質チェック）
       - name: Run Lint
