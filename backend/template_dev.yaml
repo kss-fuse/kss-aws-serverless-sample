@@ -31,6 +31,13 @@ Globals:
     Runtime: python3.13
     Timeout: 30
     Tracing: Active
+    VpcConfig:
+      SecurityGroupIds:
+        - sg-0f7381f06b1b2e8e9 # LambdaからRDS(MySQL)へのアクセスを許可するセキュリティグループID
+        - sg-0eeb61b9dd37eadb7 # LambdaからS3へのアクセスを許可するセキュリティグループID
+      SubnetIds:
+        - subnet-02dc42a62443c03d4 # subnet-private1-ap-northeast-1a
+        - subnet-0be77056ce2ab012c # subnet-public1-ap-northeast-1a
 
 Resources:
   CommonLayer:
@@ -65,3 +72,8 @@ Resources:
             RestApiId: !Ref KssServerlessSampleApi
             Path: /api/init
             Method: get
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AWSLambdaVPCAccessExecutionRole
+        - S3ReadWritePolicy:
+            BucketName: !Ref BucketName
