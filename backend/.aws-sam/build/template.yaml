@@ -76,8 +76,6 @@ Resources:
       Policies:
       - AWSLambdaBasicExecutionRole
       - AWSLambdaVPCAccessExecutionRole
-      - S3ReadWritePolicy:
-          BucketName:
-            Ref: BucketName
+      - AmazonS3FullAccess
     Metadata:
       SamResourceId: KssServerlessSampleInitFunction
