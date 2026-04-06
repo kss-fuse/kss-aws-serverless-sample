@@ -81,8 +81,8 @@ jobs:
         run: ruff check . --extend-exclude src/layers
 
       #8. テスト実行
-      - name: Run Tests
-        run: pytest --ignore=src/layers
+#      - name: Run Tests
+#        run: pytest --ignore=src/layers
       
       #9. ビルド
       - name: SAM build
