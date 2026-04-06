@@ -1,6 +1,9 @@
 import os
 import json
 import pymysql
+#import requests
+#from jose import jwt
+#from jose.exceptions import JWTError
 
 # ===== 設定 =====
 AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN")

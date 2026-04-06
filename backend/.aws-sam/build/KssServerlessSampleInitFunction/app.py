@@ -1,8 +1,9 @@
 import os
 import json
-import requests
-from jose import jwt
-from jose.exceptions import JWTError
+import pymysql
+#import requests
+#from jose import jwt
+#from jose.exceptions import JWTError
 
 # ===== 設定 =====
 AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN")
@@ -98,9 +99,7 @@ def lambda_handler(event, context):
                 database='kss_dev_db',
                 user='root',
                 password=password,
-                ssl_disabled=False,
-                autocommit=True,
-            ssl_ca='./global-bundle.pem'
+                autocommit=True
             )
             cur = conn.cursor()
             cur.execute('SELECT VERSION();')
