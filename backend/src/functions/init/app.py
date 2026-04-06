@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+import pymysql
 from jose import jwt
 from jose.exceptions import JWTError
 
@@ -98,9 +99,7 @@ def lambda_handler(event, context):
                 database='kss_dev_db',
                 user='root',
                 password=password,
-                ssl_disabled=False,
-                autocommit=True,
-            ssl_ca='./global-bundle.pem'
+                autocommit=True
             )
             cur = conn.cursor()
             cur.execute('SELECT VERSION();')
