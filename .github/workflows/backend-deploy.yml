@@ -69,8 +69,9 @@ jobs:
         run: pip install -r requirements-ci.txt
 
       - name: Install layer dependencies
-        run: pip install -r src/layers/common/requirements.txt \
-             -t src/layers/common/python        
+        run: |
+          pip install -r src/layers/common/requirements.txt \
+            -t src/layers/common/python        
 
       - name: Install dependencies for test
         run: pip install pymysql
