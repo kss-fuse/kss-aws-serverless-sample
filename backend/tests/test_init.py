@@ -1,4 +1,4 @@
-from unittest.mock import patch
+# from unittest.mock import patch
 from src.functions.init.app import lambda_handler
 
 
