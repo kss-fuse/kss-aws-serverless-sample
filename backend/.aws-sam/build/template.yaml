@@ -34,11 +34,12 @@ Globals:
     Tracing: Active
     VpcConfig:
       SecurityGroupIds:
-      - sg-0f7381f06b1b2e8e9
-      - sg-0eeb61b9dd37eadb7
+      - sg-09411edf7e8f09da5
+      - sg-0a22181b7f763ba0c
       SubnetIds:
-      - subnet-02dc42a62443c03d4
-      - subnet-0be77056ce2ab012c
+      - subnet-0dfda9e501f225ea8
+      - subnet-0b9b4518dd9d624c8
+      - subnet-07756bafd5f6a3716
 Resources:
   CommonLayer:
     Type: AWS::Serverless::LayerVersion
